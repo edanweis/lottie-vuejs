@@ -64,11 +64,12 @@ export default {
   methods: {
     async loadJsonData(path) {
       try{
+        return await import(path)
+      } catch(e) {
+        console.error(e)
         return await axios.get(path).then(response => {
           return response.data;
         });
-      } catch(e) {
-        return await import(path)
       }
     },
     async init() {
@@ -80,9 +81,6 @@ export default {
       };
 
       let jsonData = await this.loadJsonData(this.path);
-      if (!jsonData){
-        let jsonData = await import(this.path)
-      }
 
       if(this.anim) {
         this.anim.destroy(); // Releases resources. The DOM element will be emptied.
